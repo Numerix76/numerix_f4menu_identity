@@ -61,7 +61,9 @@ function F4Menu:Launch()
     F4Menu.Base:SetSize(ScrW(), ScrH())
 	
 	if string.sub(F4Menu.Settings.Background, 1, 4) == "http" then
-		F4Menu.GetImage(F4Menu.Settings.Background, F4Menu.Settings.BackgroundName, function(url, filename)
+		F4Menu.GetImage(F4Menu.Settings.Background, "background.png", function(url, filename)
+			if !IsValid(F4Menu.Base) then return end
+
 			local background = Material(filename)
 			F4Menu.Base.Paint = function(self, w, h)
 				surface.SetMaterial(background)
@@ -102,7 +104,7 @@ function F4Menu:Launch()
 		F4Menu.Icon.Image:SetPos( 1, 1 )
 		F4Menu.Icon.Image:SetPlayer( ply, 128 )
 	elseif string.sub(F4Menu.Settings.Logo, 1, 4) == "http" then
-		F4Menu.GetImage(F4Menu.Settings.Logo, F4Menu.Settings.LogoName, function(url, filename)
+		F4Menu.GetImage(F4Menu.Settings.Logo, "logo.png", function(url, filename)
 			F4Menu.Icon.Image = vgui.Create( "DImage", F4Menu.Icon )
 			F4Menu.Icon.Image:SetPos( 1,1 )
 			F4Menu.Icon.Image:SetSize( ScrW()/12.5, ScrW()/12.5 )
@@ -162,7 +164,7 @@ function F4Menu:Launch()
 		local icon = Material( v.Icon )
 
 		if string.sub(v.Icon, 1, 4) == "http" then
-			F4Menu.GetImage(v.Icon, v.IconName, function(url, filename)
+			F4Menu.GetImage(v.Icon, "button"..k..".png", function(url, filename)
 				v.Icon = filename
 				icon = Material( v.Icon )
 			end)

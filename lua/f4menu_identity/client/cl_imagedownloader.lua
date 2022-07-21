@@ -1,5 +1,7 @@
 local directory = "numerix_images/f4menu_identity"
 
+local fileDownloaded = {}
+
 function F4Menu.GetImage(url, filename, callback)
     local destination = string.Explode("/", filename, true)
     local filename = destination[#destination]
@@ -12,10 +14,11 @@ function F4Menu.GetImage(url, filename, callback)
     end
     file.CreateDir(finaldirectory)
 
-    if !file.Exists(finaldirectory.."/"..filename, "DATA") then
-        http.Fetch(url, 
+    if !fileDownloaded[filename] || !file.Exists(finaldirectory.."/"..filename, "DATA") then
+        http.Fetch(url,
             function(data)
                 file.Write(finaldirectory.."/"..filename, data)
+                fileDownloaded[filename] = true
 
                 if callback then
                     callback(url, "data/"..finaldirectory.."/"..filename)
