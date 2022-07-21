@@ -11,7 +11,7 @@ F4Menu.Language = F4Menu.Language or {}
 
 local FileSystem = "f4menu_identity"
 local AddonName = "Identity F4Menu"
-local Version = "1.1.7"
+local Version = "1.1.8"
 local FromWorkshop = false
 
 if SERVER then

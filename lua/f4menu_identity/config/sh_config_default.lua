@@ -4,7 +4,7 @@ F4Menu made by Numerix (https://steamcommunity.com/id/numerix/)
 
 --------------------------------------------------------------------------------------------------]]
 
-F4Menu.Settings.VersionDefault = "1.0.8" --DON'T TOUCH THIS
+F4Menu.Settings.VersionDefault = "1.0.9" --DON'T TOUCH THIS
 
 --Change the language
 F4Menu.Settings.Language = "en"
@@ -248,6 +248,23 @@ F4Menu.Settings.Navigation =
         ColorImage = Color(255,255,255,255),
         ColorSelected = Color(47, 174, 79, 100),
     }, 
+    {
+        Enabled = true,
+        Name = "LAWS",
+        Desc = "See laws of the city !",
+        DoLoadPanel = "F4Menu_Tab_Laws",
+        OnLoadInit = false,
+        Icon = "numerix_f4menu/play-button.png",
+        IconName = "your_server_name/icon1.png",
+        Visible = function(ply) return true end,
+        NotDrawLine = false,
+        ColorLine = Color( 255, 255, 255, 100 ),
+        ColorBase = Color(33, 31, 35, 200),
+        ColorHover = Color( 0, 0, 0, 100 ),
+        ColorText = Color( 255, 255, 255, 255 ),
+        ColorImage = Color(255,255,255,255),
+        ColorSelected = Color(47, 174, 79, 100),
+    },
     
     {
         Enabled = true,
