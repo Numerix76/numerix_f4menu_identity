@@ -8,7 +8,6 @@ local colorbg_button = Color(33, 31, 35, 200)
 
 local colorbg_nav = Color(52, 55, 64, 100)
 
-local IsF4MenuOpen = false
 local countTabsTotal
 local getWidth
 local InitialPanel = false
@@ -35,8 +34,6 @@ function F4Menu:Launch()
 	
 	if ( F4Menu:IsOpen() ) then
 		F4Menu:Close()
-
-		print("qzdq")
 
 		return
 	end
