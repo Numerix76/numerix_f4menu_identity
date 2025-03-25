@@ -14,43 +14,30 @@ local getWidth
 local InitialPanel = false
 
 -----------------------------------------------------------------
---  F4Menu:Launch
+--  F4Menu:Open
 -----------------------------------------------------------------
 local blur = Material("pp/blurscreen")
 local function blurPanel(p, a, h)
-		local x, y = p:LocalToScreen(0, 0)
-		local scrW, scrH = ScrW(), ScrH()
-		surface.SetDrawColor(color_white)
-		surface.SetMaterial(blur)
-		for i = 1, (h or 3) do
-			blur:SetFloat("$blur", (i/3)*(a or 6))
-			blur:Recompute()
-			render.UpdateScreenEffectTexture()
-			surface.DrawTexturedRect(x*-1,y*-1,scrW,scrH)
-		end
+	local x, y = p:LocalToScreen(0, 0)
+	local scrW, scrH = ScrW(), ScrH()
+	surface.SetDrawColor(color_white)
+	surface.SetMaterial(blur)
+	for i = 1, (h or 3) do
+		blur:SetFloat("$blur", (i/3)*(a or 6))
+		blur:Recompute()
+		render.UpdateScreenEffectTexture()
+		surface.DrawTexturedRect(x*-1,y*-1,scrW,scrH)
+	end
 end
 
-function F4Menu:Launch()
+function F4Menu:Open()
 	local ply = LocalPlayer()
 	
-	if IsValid( F4Menu.Base ) then
-		if F4Menu.Base:IsVisible() then
-			F4Menu.Base:Remove()
-			gui.EnableScreenClicker(false)
-			IsF4MenuOpen = false
-
-			F4Menu.HideBox()
-			hook.Remove("HUDShouldDraw", "F4Menu.HideAllHUD")
-
-			return false
-		end
-	end
+	F4Menu:Close()
 
 	hook.Add("HUDShouldDraw", "F4Menu.HideAllHUD", function()
 		return false
 	end)
-
-	gui.EnableScreenClicker(true)
 
     F4Menu.Base = vgui.Create("DFrame")
 	F4Menu.Base:SetTitle("")
@@ -272,6 +259,19 @@ function F4Menu:Launch()
 	end
 end
 
+function F4Menu:Close()
+	if IsValid( F4Menu.Base ) then
+		F4Menu.Base:Remove()
+			
+		F4Menu.HideBox()
+		hook.Remove("HUDShouldDraw", "F4Menu.HideAllHUD")
+	end
+end
+
+function F4Menu:IsOpen()
+	return IsValid(Echap.Base)
+end
+
 Texts = {}
 
 Texts.DarkRPCommand = "say"
@@ -297,38 +297,15 @@ function RunEntCmd(...)
 	
 	RunConsoleCommand(Texts.DarkRPCommand, "/"..arg)
 end
------------------------------------------------------------------
---  Keybinds
------------------------------------------------------------------
 
-local keyNames
-local function KeyNameToNumber(str)
-    if not keyNames then
-        keyNames = {}
-        for i = 1, 107, 1 do
-            keyNames[input.GetKeyName(i)] = i
-        end
-    end
+net.Receive("F4Menu.ToggleMenu", function()
+	if ( F4Menu:IsOpen() ) then 
+		F4Menu:Close()
+	else
+		F4Menu:Open()
+	end
 
-    return keyNames[str]
-end
-
-hook.Add("ShowSpare2", "F4Menu:Override", function()
-	return false
-end)
-
-hook.Add("PreRender", "F4Menu:PreRender", function()
-	local F4Key = KeyNameToNumber(input.LookupBinding("gm_showspare2")) or KEY_F4
-	if ( input.IsKeyDown( F4Key )  or input.IsKeyDown( KEY_ESCAPE ) && IsF4MenuOpen == true ) then
-		timer.Create("AntiSpamF4",0.05,1, function() 
-			InitialPanel = false
-			IsF4MenuOpen = true
-			if IsValid( F4Menu.Base ) then
-	    		F4Menu:Launch()
-				IsF4MenuOpen = false
-			else
-				F4Menu:Launch()
-			end
-		end)
+	if ( Echap and Echap:IsOpen() ) then
+		Echap:Close()
 	end
 end)
