@@ -14,7 +14,7 @@ local getWidth
 local InitialPanel = false
 
 -----------------------------------------------------------------
---  F4Menu:Open
+--  F4Menu:Launch
 -----------------------------------------------------------------
 local blur = Material("pp/blurscreen")
 local function blurPanel(p, a, h)
@@ -30,10 +30,16 @@ local function blurPanel(p, a, h)
 	end
 end
 
-function F4Menu:Open()
+function F4Menu:Launch()
 	local ply = LocalPlayer()
 	
-	F4Menu:Close()
+	if ( F4Menu:IsOpen() ) then
+		F4Menu:Close()
+
+		print("qzdq")
+
+		return
+	end
 
 	hook.Add("HUDShouldDraw", "F4Menu.HideAllHUD", function()
 		return false
@@ -277,7 +283,7 @@ function F4Menu:Close()
 end
 
 function F4Menu:IsOpen()
-	return IsValid(Echap.Base)
+	return IsValid(F4Menu.Base)
 end
 
 Texts = {}
@@ -310,7 +316,7 @@ net.Receive("F4Menu.ToggleMenu", function()
 	if ( F4Menu:IsOpen() ) then 
 		F4Menu:Close()
 	else
-		F4Menu:Open()
+		F4Menu:Launch()
 	end
 
 	if ( Echap and Echap:IsOpen() ) then
