@@ -46,6 +46,14 @@ function F4Menu:Open()
 	F4Menu.Base:MakePopup()
     F4Menu.Base:SetPos(0,0)
     F4Menu.Base:SetSize(ScrW(), ScrH())
+	F4Menu.Base.OnKeyCodePressed = function(self, key)
+		local F4Key = input.GetKeyCode(input.LookupBinding("gm_showspare2")) or KEY_F4
+		local EscapeKey = KEY_ESCAPE
+
+		if key == F4Key or key == EscapeKey then
+			F4Menu:Close()
+		end
+	end
 	
 	if string.sub(F4Menu.Settings.Background, 1, 4) == "http" then
 		F4Menu.GetImage(F4Menu.Settings.Background, "background.png", function(url, filename)
