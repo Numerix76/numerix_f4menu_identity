@@ -11,7 +11,7 @@ F4Menu.Language = F4Menu.Language or {}
 
 local FileSystem = "f4menu_identity"
 local AddonName = "Identity F4Menu"
-local Version = "1.2.0"
+local Version = "1.2.1"
 local FromWorkshop = false
 
 if SERVER then
@@ -75,18 +75,6 @@ if SERVER then
     end
 
     hook.Add("PlayerConnect", "F4Menu:Connect", function()
-        if !game.SinglePlayer() then
-            http.Post("https://gmod-radio-numerix.mtxserv.com/api/connect.php", { script = FileSystem, ip = game.GetIPAddress() }, 
-            function(result)
-                if result then 
-                    MsgC( Color( 225, 20, 30 ), "["..AddonName.."]", Color(255,255,255), " Connection established\n") 
-                end
-            end, 
-            function(failed)
-                MsgC( Color( 225, 20, 30 ), "["..AddonName.."]", Color(255,255,255), " Connection failed : "..failed.."\n")
-            end)
-        end
-
         if !FromWorshop then
             http.Fetch( "https://gmod-radio-numerix.mtxserv.com/api/version/"..FileSystem..".txt",
                 function( body, len, headers, code )
@@ -108,21 +96,6 @@ if SERVER then
 
         hook.Remove("PlayerConnect", "F4Menu:Connect")
     end)
-
-    hook.Add("ShutDown", "F4Menu:Disconnect", function()
-        if !game.SinglePlayer() then
-            http.Post("https://gmod-radio-numerix.mtxserv.com/api/disconnect.php", { script = FileSystem, ip = game.GetIPAddress() }, 
-            function(result)
-                if result then 
-                    MsgC( Color( 225, 20, 30 ), "["..AddonName.."]", Color(255,255,255), " Disconnection\n") 
-                end
-            end, 
-            function(failed)
-                MsgC( Color( 225, 20, 30 ), "["..AddonName.."]", Color(255,255,255), " Disconnection failed : "..failed.."\n")
-            end)
-        end
-    end)
-
 end
 
 if CLIENT then
